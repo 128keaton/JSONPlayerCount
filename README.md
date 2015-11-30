@@ -3,6 +3,15 @@
 
 Bukkit player count to a JSON file
 
+## Features:
+* Player list with avatars!
+* Compatability with older versions**
+* 'Backend' status.
+* Simple: only uses JSON (stats), Java (bukkit plugin), JavaScript/HTML/CSS (web front-end).
+* Web front-end built using Bootstrap, looks good on any screen size.
+* Player count
+* Doesn't use an API service, all in house :)
+
 ## Installation:
 ### From source:
 Open in Eclipse, export as JAR with libraries (lib folder)
@@ -32,3 +41,6 @@ And to get around Ajax errors, I made a file on my web server to read and return
 
 ## Bukkit Dev:
 Also, the plugin is available on [Bukkit Dev](JSONPlayercounter)
+
+## Notes:
+** (only tested with 1.5.1, but theoretically should work with most versions)
