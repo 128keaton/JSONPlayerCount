@@ -8,6 +8,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -53,8 +54,27 @@ private static Plugin plugin;
         } catch (final Exception e) {
             e.printStackTrace();
         }
+        Notification.PlayersOnline = Bukkit.getOnlinePlayers().length;
+
+        for(Player allPlayers : Bukkit.getOnlinePlayers()) {
+        	
+        	System.out.println("Players: " + allPlayers.getName() + "\n");
+        	Notification.playerList.add(allPlayers.getName());
+        	
+        	}
+         try {
+     				Notification.update();
+     			} catch (IOException e1) {
+     				// TODO Auto-generated catch block
+     				e1.printStackTrace();
+     				
+     			}
+                  
+         
+        }
+    
         
-    }
+    
     private void addClassPath(final URL url) throws IOException {
         final URLClassLoader sysloader = (URLClassLoader) ClassLoader
                 .getSystemClassLoader();
