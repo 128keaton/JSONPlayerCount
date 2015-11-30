@@ -137,6 +137,7 @@ public class Notification implements Listener {
 
                     jGenerator.writeStartObject();
                     jGenerator.writeStringField("name", allPlayers.getName() );
+                    jGenerator.writeNumberField("health", allPlayers.getHealth() );
                     jGenerator.writeEndObject();
 
                  }
