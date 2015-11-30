@@ -1,5 +1,5 @@
 # JSONPlayerCount
-[can you see me?][http://i.imgur.com/wVftXVi.png]
+![do you see what I see?](https://github.com/128keaton/JSONPlayerCount/raw/master/src/img/JSONPlr.png "")
 Bukkit player count to a JSON file
 
 ## Installation:
