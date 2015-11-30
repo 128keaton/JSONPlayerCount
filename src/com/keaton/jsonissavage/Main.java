@@ -75,6 +75,9 @@ private static Plugin plugin;
    
     @Override
     public void onDisable() {
+    	File fileOld = new File("stats.json");
+		fileOld.delete();
+		
        
         }
     public static Main getInstance() {
