@@ -3,6 +3,11 @@
  */
 
 /* Links */
+
+.health{
+	font-size: 15px;
+	font-style: normal;
+}
 a,
 a:focus,
 a:hover {
@@ -19,13 +24,8 @@ a:hover {
   border: 1px solid #fff;
 }
 
-
-.avatar{
-    padding: 5px;
-    margin-bottom: 2px;
-}
-#player-text{
-    font-style: normal;
+#twitter-feed{
+	max-height: 15%; 
 }
 /*
  * Base structure
