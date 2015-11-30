@@ -42,5 +42,11 @@ And to get around Ajax errors, I made a file on my web server to read and return
 ## Bukkit Dev:
 Also, the plugin is available on [Bukkit Dev](JSONPlayercounter)
 
-## Notes:
+## Notes/FAQ:
+Q: Why did you do this, why not use an API service?:
+A: The server I use uses 1.5.1 Spigot, which hasn't and will never use modern Minecraft server querying responses. Most, if not all, working APIs on the web right now do not support 1.5.1 query responses. I thought about writing an API with older support, but a Bukkit plugin seemed to be more fun. Plus, it allows for expandability. I could eventually add chat messages or even player health/location to the web front-end.
+
+
 ** (only tested with 1.5.1, but theoretically should work with most versions)
+
+Also, I havent tested above three players, so beyond that, formatting might (no promises) get funky.
