@@ -1,6 +1,13 @@
 package com.keaton.jsonissavage;
 
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
+
+import org.bukkit.Bukkit;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -23,7 +30,47 @@ private static Plugin plugin;
         new Notification(this);
         plugin = this;
         Main.instance = this;
+        try {
+            final File[] libs = new File[] {
+                    new File(getDataFolder(), "jettison-1.3.3.jar"),
+                    new File(getDataFolder(), "jackson-core-2.6.3.jar")};
+            for (final File lib : libs) {
+                if (!lib.exists()) {
+                    JarUtils.extractFromJar(lib.getName(),
+                            lib.getAbsolutePath());
+                }
+            }
+            for (final File lib : libs) {
+                if (!lib.exists()) {
+                    getLogger().warning(
+                            "There was a critical error loading My plugin! Could not find lib: "
+                                    + lib.getName());
+                    Bukkit.getServer().getPluginManager().disablePlugin(this);
+                    return;
+                }
+                addClassPath(JarUtils.getJarUrl(lib));
+            }
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
+        
     }
+    private void addClassPath(final URL url) throws IOException {
+        final URLClassLoader sysloader = (URLClassLoader) ClassLoader
+                .getSystemClassLoader();
+        final Class<URLClassLoader> sysclass = URLClassLoader.class;
+        try {
+            final Method method = sysclass.getDeclaredMethod("addURL",
+                    new Class[] { URL.class });
+            method.setAccessible(true);
+            method.invoke(sysloader, new Object[] { url });
+        } catch (final Throwable t) {
+            t.printStackTrace();
+            throw new IOException("Error adding " + url
+                    + " to system classloader");
+        }
+    }
+    
    
        
    

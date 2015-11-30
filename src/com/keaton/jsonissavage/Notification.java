@@ -3,18 +3,23 @@ package com.keaton.jsonissavage;
 import org.bukkit.Bukkit;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
-
-import org.json.simple.JSONObject;
+import java.util.Date;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+
+import com.fasterxml.jackson.core.JsonEncoding;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+
+
 
 
 
@@ -25,7 +30,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class Notification implements Listener {
 	public static int PlayersOnline = 0;
-	public static ArrayList<Player> playerList;
+	public static ArrayList<String> playerList = new ArrayList<String>();
 	
     public Notification(Main plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);   
@@ -41,10 +46,12 @@ public class Notification implements Listener {
         PlayersOnline = Bukkit.getOnlinePlayers().length;
         System.out.println("Player joined! Hola amigo! Players online: " + PlayersOnline);
         
-        for (Player p2 : Bukkit.getOnlinePlayers()) {
-            Notification.playerList.add(p2);
-        }
-        
+        for(Player allPlayers : Bukkit.getOnlinePlayers()) {
+        	
+        	System.out.println("Players: " + allPlayers.getName() + "\n");
+        	playerList.add(allPlayers.getName());
+        	
+        	}
          try {
      				Notification.update();
      			} catch (IOException e1) {
@@ -71,8 +78,11 @@ public class Notification implements Listener {
         		  PlayersOnline = Bukkit.getOnlinePlayers().length;
                   System.out.println("Player left! Adios amigo! Players online: " + PlayersOnline);
             
-                  for (Player p2 : Bukkit.getOnlinePlayers()) {
-                      Notification.playerList.add(p2);
+                  for(Player allPlayers : Bukkit.getOnlinePlayers()) {
+                  
+                  	System.out.println("Players: " + allPlayers.getName() + "\n");
+                  	playerList.add(allPlayers.getName());
+                  	
                   }
                   
                   try {
@@ -92,43 +102,65 @@ public class Notification implements Listener {
 
     }
     
-        @SuppressWarnings("unchecked")
+  
 		public static void update() throws IOException{
         
+        	
     		
-    		ArrayList<Player> players = Notification.playerList;
     
-    		
-    		
+        	JsonFactory jfactory = new JsonFactory();
   
     		
-    		JSONObject obj = new JSONObject();
-      		for ( Player p : players ) {
-   		     obj.put("player", p.getName());
-   		     /// And so on...
-      		}
- 
-    		obj.put("players", Notification.PlayersOnline);
+
     		
-    /**		JSONArray servicesJSON = new JSONArray();
-    	        ArrayList<Player> playerList = Notification.playerList;
-    	        for(int i=0; i< playerList.size(); i++)
-    	        {
-    	            servicesJSON.add(playerList.get(i)); // use the toMap method here.
-    	        }
-    	        obj.put("player", servicesJSON);**/
+
+
+
+    			File fileOld = new File("stats.json");
+        		fileOld.delete();
+        		
+        		 DateFormat dateFormat = new SimpleDateFormat("MM/dd HH:mm:ss");
+        		 Date date = new Date();
+        		 
+        		 
+    			@SuppressWarnings("deprecation")
+			JsonGenerator jGenerator = jfactory.createJsonGenerator(new File("stats.json"), JsonEncoding.UTF8);
+    			jGenerator.writeStartObject(); // {
+
+    			jGenerator.writeStringField("last_updated", dateFormat.format(date)); 
+    			jGenerator.writeNumberField("players", Notification.PlayersOnline); // "age" : 29
+
+    			jGenerator.writeFieldName("list");
+    			jGenerator.writeStartArray();
+    			
+    			for(Player allPlayers : Bukkit.getOnlinePlayers()){
+
+                    jGenerator.writeStartObject();
+                    jGenerator.writeStringField("name", allPlayers.getName() );
+                    jGenerator.writeEndObject();
+
+                 }
+    			 jGenerator.writeEndArray();
+                  for(Player allPlayers : Bukkit.getOnlinePlayers()){
+                	  
+                	  System.out.println("Players: " + allPlayers.getName() + "\n");
+                     }
+                  
+		
     		
+    		
+
+    			jGenerator.close();
     	        
-    		File fileOld = new File("stats.json");
-    		fileOld.delete();
+    	
     		
-    		try (FileWriter file = new FileWriter("stats.json")) {
+    	
     			
     			
-    			file.write(obj.toJSONString());
+    		
     			System.out.println("Successfully Copied JSON Object to File...");
-    			System.out.println("\nJSON Object: " + obj);
-    		}
+    			System.out.println("\nJSON Object: " + jGenerator.toString());
+    		
         }
 
 	        
