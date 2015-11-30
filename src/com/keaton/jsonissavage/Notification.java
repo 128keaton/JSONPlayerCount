@@ -12,6 +12,8 @@ import java.util.Date;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -62,7 +64,26 @@ public class Notification implements Listener {
                   
          
         }
-               
+           
+    @EventHandler
+    public void onHeal (EntityRegainHealthEvent event) throws IOException {
+    if(!(event.getEntity() instanceof Player)) {
+    return;
+    }
+ 
+    Notification.update();
+     
+    }
+     
+    @EventHandler
+    public void onDamage (EntityDamageEvent event) throws IOException {
+    	if(!(event.getEntity() instanceof Player)) {
+    	    return;
+    	    }
+    	    Notification.update();
+    
+    }
+
            
        
 
@@ -137,6 +158,7 @@ public class Notification implements Listener {
 
                     jGenerator.writeStartObject();
                     jGenerator.writeStringField("name", allPlayers.getName() );
+                    jGenerator.writeNumberField("health", allPlayers.getHealth() );
                     jGenerator.writeEndObject();
 
                  }

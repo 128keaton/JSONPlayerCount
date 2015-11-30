@@ -33,8 +33,7 @@ private static Plugin plugin;
         Main.instance = this;
         try {
             final File[] libs = new File[] {
-                    new File(getDataFolder(), "jettison-1.3.3.jar"),
-                    new File(getDataFolder(), "jackson-core-2.6.3.jar")};
+            		new File(getDataFolder(), "jackson-core-2.6.3.jar")};
             for (final File lib : libs) {
                 if (!lib.exists()) {
                     JarUtils.extractFromJar(lib.getName(),
@@ -96,6 +95,9 @@ private static Plugin plugin;
    
     @Override
     public void onDisable() {
+    	File fileOld = new File("stats.json");
+		fileOld.delete();
+		
        
         }
     public static Main getInstance() {
